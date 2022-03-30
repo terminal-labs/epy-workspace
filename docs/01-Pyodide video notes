@@ -1,0 +1,46 @@
+Pyodide video:
+https://www.youtube.com/watch?v=KrlqQBH84x4
+
+- Came out of Mozilla
+- Moved out of Mozilla
+- Takes @ 10 secs to load but runs in worker so won't block main UI thread
+
+Packages:
+
+- binary packages included in Pyodide (numpy, etc.)
+- micropip pure Python
+- C/Cython/C++/Fortran packages: set up Pyodide build environment
+
+Using Pyodide in web app
+
+- Pyodide as replacement for JS
+- Run interactive Python in browser (JupyterLite)
+- As replacement for Python backend API (no web request)
+
+Case Study: Date Science App for a University Course
+
+- Problem: distribute data science app to mech engineering students that can be run
+  on a wide range of computers (university and student-owned)
+- https://github.com/mgreminger/response-surface-pareto
+- svelt for JS/UI
+- plotly.js
+
+Potential Roadblocks
+
+- Early days for Pyodide + Wasm
+- Stack size is limited so recursion limit is low
+- No Safari
+- Old SciPy (Fortran compilation issues)
+- Large/complicated modules can be difficult to package for Pyodide
+- Debugging
+
+Q+A
+
+Q: What alternatives did you consider?
+A: Static deployment = reason
+
+Q: Min machine configuration
+A: Any computer that will run Chrome or FF (no iOS or Android yet)
+
+Q: Numba?
+A: Not in Pyodide pkgs yet
