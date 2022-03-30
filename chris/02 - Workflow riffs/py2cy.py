@@ -39,10 +39,13 @@ if __name__ == "__main__":
     parser.add_argument(dest='arg1', type=str, help="A string argument")
     args = parser.parse_args()
 
-    with open(args.arg1):
-        ...  # Do nothing...
+    # with open(args.arg1):
+    #     ...
+    python = None
 
-    cython = transpile()
+    cython = transpile(python)
+
     with open("output.py", "w") as buffer:
         buffer.write(cython)
+
     print("Transpiled")
