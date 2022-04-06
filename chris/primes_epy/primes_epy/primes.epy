@@ -1,3 +1,6 @@
+## epy version 0.1
+## python 3.10
+##
 def primes(nb_primes: cython.int):
     i: cython.int
     p: cython.int[1000]
