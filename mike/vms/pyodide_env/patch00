@@ -1,0 +1,24 @@
+--- cpython/Makefile	2022-04-06 16:57:24.423040611 +0000
++++ /vagrant/Makefile	2022-04-06 17:12:57.097813364 +0000
+@@ -12,10 +12,10 @@
+ LIB=libpython$(PYMAJOR).$(PYMINOR).a
+ SYSCONFIG_NAME=_sysconfigdata__emscripten_
+ 
+-ZLIBVERSION = 1.2.11
++ZLIBVERSION = 1.2.12
+ ZLIBTARBALL=$(ROOT)/downloads/zlib-$(ZLIBVERSION).tar.gz
+ ZLIBBUILD=$(ROOT)/build/zlib-$(ZLIBVERSION)
+-ZLIBURL=https://zlib.net/zlib-1.2.11.tar.gz
++ZLIBURL=https://zlib.net/zlib-1.2.12.tar.gz
+ 
+ SQLITETARBALL=$(ROOT)/downloads/sqlite-autoconf-3270200.tar.gz
+ SQLITEBUILD=$(ROOT)/build/sqlite-autoconf-3270200
+@@ -87,7 +87,7 @@
+ 
+ $(ZLIBBUILD)/.configured: $(ZLIBTARBALL)
+ 	[ -d $(ROOT)/build ] || (mkdir $(ROOT)/build)
+-	tar -C $(ROOT)/build/ -xf $(ROOT)/downloads/zlib-1.2.11.tar.gz
++	tar -C $(ROOT)/build/ -xf $(ROOT)/downloads/zlib-1.2.12.tar.gz
+ 	cd $(ZLIBBUILD); emconfigure ./configure
+ 	touch $@
+ 
