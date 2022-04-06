@@ -1,0 +1,27 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+  </head>
+  <body>
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/pyodide/v0.19.1/full/pyodide.js"
+    ></script>
+    <script type="text/javascript">
+      async function main() {
+        let pyodide = await loadPyodide({
+          indexURL: "https://cdn.jsdelivr.net/pyodide/v0.19.1/full/",
+        });
+        await pyodide.loadPackage("micropip");
+        await pyodide.runPythonAsync(`
+        import micropip
+        await micropip.install('numpy')
+        import numpy
+        response = numpy.ones((3, 4))
+        print(response)
+      `);
+      }
+      main();
+    </script>
+  </body>
+</html>
