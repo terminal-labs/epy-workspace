@@ -1,4 +1,4 @@
-from .functions import hello_world, fib
+from app.functions import hello_world, fib
 
 def main():
     hello_world()
