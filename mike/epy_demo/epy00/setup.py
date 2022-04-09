@@ -1,13 +1,13 @@
 from setuptools import setup
 
 setup(
-    name="demopack",
-    version='0.1',
-    packages=['demopack'],
+    name="epy00",
+    version='0.0.1',
+    packages=['epy00'],
     install_requires=[
     ],
     entry_points='''
         [console_scripts]
-        demo=demopack.app:main
+        demo=epy00.app:main
     ''',
 )
