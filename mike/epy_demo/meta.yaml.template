@@ -1,0 +1,6 @@
+package:
+  name: epy##
+  version: 0.0.1
+source:
+  sha256: asdf123
+  url: http://127.0.0.1:8000/epy##.0.1.tar.gz
