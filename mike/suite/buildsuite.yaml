@@ -1,0 +1,11 @@
+%YAML 1.2
+---
+person:
+  dateOfBirth: 1969-12-31
+  firstName: John
+  lastName: Doe
+  married: true
+  spouse:
+    dateOfBirth: null  # This is a comment
+    firstName: Jane
+    lastName: Doe
