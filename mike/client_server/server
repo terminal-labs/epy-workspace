@@ -1,0 +1,5 @@
+from flask import request
+
+@app.route('/events', methods=['POST'])
+def events():
+    event_data = request.json
