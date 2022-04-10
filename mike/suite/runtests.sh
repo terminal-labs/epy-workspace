@@ -7,6 +7,6 @@ git clone git@github.com:terminal-labs/epython.git
 vagrant up
 cd epython
 pip install -e .
-cd ..
+cd ../..
 pip install -r requirements.txt
 python client.py
