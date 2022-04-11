@@ -1,5 +1,5 @@
 source ~/miniconda3/etc/profile.d/conda.sh
-#conda create -y --name suite python=3.10
+conda create -y --name suite python=3.10
 conda activate suite
 
 cd _workspace
@@ -9,4 +9,13 @@ cd epython
 pip install -e .
 cd ..
 pip install -r requirements.txt
+
+cp plugins/examples/default.py plugins/default.py
+
+cd plugins/examples/pack
+zip test.zip -D *
+mv test.zip ../../test.zip
+cd ../../..
+pwd
+
 python client.py

@@ -7,105 +7,98 @@ The AST is validated to ensure it uses only the allowed subset of Python
 The AST is then fed to a transformer specific to the backend.
 
 """
-import argparse
+import os
+from os import listdir
+from os.path import isfile, join
 import ast
 import os.path
 
 from epython import __version__
 from .validate import validate
+from .core import MyApplication
 
-# See https://greentreesnakes.readthedocs.io/en/latest/nodes.html
+import click
 
-_registry = {}
-
-def register_func(name_or_func):
-    if isinstance(name_or_func, str):
-        name = name_or_func
-        func = None
-    else:
-        func = name_or_func
-        name = func.__name__
-    if func is None:
-        def decorator(new_func):
-            _registry[name] = new_func
-            return new_func
-        return decorator
-    else:
-        _registry[name] = func
-        return func
-
-# A transformation function needs to take as agruments
-#  ast: the validated ast of the code
-#  filename: the name to generate the artefacts
-#
-# It returns the PATH (or URL) of the created artefact
-
-@register_func('cpython')
-def transform(ast, name):
-    return name + '.so'
-
-# @register_func
-# def pypy(mine):
-#     return mine
+def find_plugins(path):
+    onlyfiles = [f for f in listdir(path) if isfile(join(path, f))]
+    return onlyfiles
 
 def main():
-    find_backends()
-    parser = argparse.ArgumentParser(prog='epython',
-            description="Compile statically typed subset of Python to a backend.")
-    parser.add_argument("file")
-    parser.add_argument("--backend", default="cpython")
-    parser.add_argument("--name", default="none")
-    parser.add_argument("--version", action='version',
-                        version='%(prog)s ' + __version__)
-    args = parser.parse_args()
-
-    if args.name == 'none':
-        name = os.path.splitext(args.file)[0]
-    else:
-        name = args.name
-
-    with open(args.file) as fi:
-        source = fi.read()
-
-    code = ast.parse(source, name, 'exec', type_comments=True)
-    result = validate(code)
-    if result is not None:
-        raise result[0](result[1])
-
-    try:
-        transformer = _registry[args.backend]
-    except KeyError:
-        raise RuntimeError(f"There is no epython backend registered for {args.backend}.")
-
-    output = transformer(code, name)
-
-    from .cython_backend import CythonGenerator
-    translator = CythonGenerator()
-    print(translator.visit(code))
-
-
-# importing the backend should be sufficient to call the decorator(s)
-# that registers the function in _registry which is why the
-# dictionary created here is not returned or seemingly unused.
-def find_backends():
-    import importlib
-    import pkgutil
-
-    # importing the module registers the function.
-    discovered_plugins = {
-        name: importlib.import_module(name)
-        for finder, name, ispkg in pkgutil.iter_modules()
-                if name.startswith('epython-')
-    }
-
-    if len(discovered_plugins) > len(_registry):
-        print("Registry: ")
-        print(_registry)
-        print("\n\nPlugin Modules Found: ")
-        print(discovered_plugins)
-        raise (ValueError, "The number of Plugin Modules Found is larger "
-               "than the number of transformations successfully registered.")
+    pass
+    # parser = argparse.ArgumentParser(prog='epython',
+    #         description="Compile statically typed subset of Python to a backend.")
+    # parser.add_argument("file")
+    # parser.add_argument("--backend", default="cpython")
+    # parser.add_argument("--name", default="none")
+    # parser.add_argument("--version", action='version',
+    #                     version='%(prog)s ' + __version__)
+    # args = parser.parse_args()
+    #
+    # if args.name == 'none':
+    #     name = os.path.splitext(args.file)[0]
+    # else:
+    #     name = args.name
+    #
+    # with open(args.file) as fi:
+    #     source = fi.read()
+    #
+    # code = ast.parse(source, name, 'exec', type_comments=True)
+    # result = validate(code)
+    # if result is not None:
+    #     raise result[0](result[1])
+    #
+    # try:
+    #     transformer = _registry[args.backend]
+    # except KeyError:
+    #     raise RuntimeError(f"There is no epython backend registered for {args.backend}.")
+    #
+    # output = transformer(code, name)
+    #
+    # from .cython_backend import CythonGenerator
+    # translator = CythonGenerator()
+    # print(translator.visit(code))
 
 
-if __name__ == "__main__":
-    code = main()
+PROJECT_NAME = "epython"
+VERSION = "0.1"
+context_settings = {"help_option_names": ["-h", "--help"]}
+
+@click.group(context_settings=context_settings)
+@click.version_option(prog_name=PROJECT_NAME.capitalize(), version=VERSION)
+@click.pass_context
+def cli(ctx):
+    pass
+
+@click.group(name="plugins")
+def plugins_group():
+    pass
+
+@plugins_group.command(name="listplugins")
+def listplugins_command():
+    cwd = os.getcwd()
+    print(find_plugins(cwd + "/plugins"))
+
+@click.group(name="convert")
+def convert_group():
+    pass
+
+@convert_group.command(name="test")
+def convertfile_command():
+    app = MyApplication()
+    app.run()
+
+@click.argument("filepath")
+@click.option('-b', '--backend', 'backend', default="cython")
+@convert_group.command(name="convertfile")
+def convertfile_command(backend, filepath):
+    print(backend, filepath)
+
+@click.argument("apppath")
+@click.option('-b', '--backend', 'backend', default="cython")
+@convert_group.command(name="convertapp")
+def convertapp_command(backend, apppath):
+    print(backend, apppath)
+
+cli.add_command(plugins_group)
+cli.add_command(convert_group)
+main = cli
