@@ -9,6 +9,8 @@ cd epython
 pip install -e .
 cd ..
 pip install -r requirements.txt
+python client.py
+cd ..
 
 cp plugins/examples/default.py plugins/default.py
 
@@ -16,6 +18,3 @@ cd plugins/examples/pack
 zip test.zip -D *
 mv test.zip ../../test.zip
 cd ../../..
-pwd
-
-python client.py
