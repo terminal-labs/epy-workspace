@@ -1,0 +1,21 @@
+body, html {
+  overflow-x: hidden;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+#app {
+  margin: 0 auto;
+  padding: 0 1.5em;
+  max-width: 1040px;
+}
+
+body {
+  font-family: "Red Hat Text", sans-serif;
+}
