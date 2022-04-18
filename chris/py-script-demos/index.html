@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>py-script demos</title>
+    <!-- Styles //-->
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Text:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="static/pyscript.css" />
+    <link media="all" rel="stylesheet" href="static/style.css">
+
+    <!-- pyscript -->
+    <script defer src="static/pyscript.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <!-- Header //-->
+      <header>
+        <h1>py-script Demos</h1>
+      </header>
+
+      <main>
+        <div class="loading-container">
+          <div class="loading"></div>
+        </div>
+
+<!-- py-script and py-env -->
+
+<py-env>
+- matplotlib
+</py-env>
+
+<py-script>
+from js import (
+  alert,
+  document,
+  devicePixelRatio,
+)
+
+import base64
+from io import BytesIO
+
+import matplotlib.pyplot as plt
+
+data = [
+  ["Day#", "Value"],
+  [1, 0.4871],
+  [2, 0.5105],
+  [3, 0.5338],
+  [4, 0.3105],
+  [5, 0.3018],
+  [6, 0.2931],
+  [7, 0.2844],
+  [8, 0.3453],
+  [9, 0.4062],
+  [10, 0.4671],
+  [11, 0.4126],
+  [12, 0.3581],
+  [13, 0.4432],
+  [14, 0.5283],
+  [15, 0.6134],
+  [16, 0.6985],
+  [17, 0.6438],
+  [18, 0.5892],
+  [19, 0.5346],
+  [20, 0.6585],
+  [21, 0.6133],
+  [22, 0.5681],
+  [23, 0.5228],
+  [24, 0.4776],
+]
+
+# Extract plotting data and info from `data`
+
+labels = data.pop(0)
+xlabel, ylabel = labels
+x = [row[0] for row in data]
+y = [row[1] for row in data]
+
+# Create plt
+
+fig, ax = plt.subplots(dpi=100, figsize=(8, 4))  # 800 x 400
+ax.bar(x, y)
+ax.set_xlabel("Day #")
+ax.set_ylabel("Value")
+buffer = BytesIO()
+fig.savefig(buffer, format="png")
+img_data = base64.b64encode(buffer.getbuffer()).decode("ascii")
+plt.close()  # `pyplot` can cause memory leaks - explicitly close
+
+# Remove "loading" animation
+loading = document.getElementsByClassName("loading-container")[0]
+loading.style.display = "none"
+
+# Write to browser
+container = document.getElementById("container")
+plot = document.createElement("img")
+plot.src = f"data:image/png;base64,{img_data}"
+container.append(plot)
+
+</py-script>
+
+<!-- end py-script and py-env -->
+
+<!-- Output -->
+
+<div id="container"></div>
+
+
+<!-- End output -->
+      </main>
+    </div>
+    <!-- Scripts //-->
+  </body>
+</html>
