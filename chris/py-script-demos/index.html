@@ -35,6 +35,7 @@ from js import (
   alert,
   document,
   devicePixelRatio,
+  Image
 )
 
 import base64
@@ -56,7 +57,7 @@ data = [
   [10, 0.4671],
   [11, 0.4126],
   [12, 0.3581],
-  [13, 0.4432],
+  [13, 0.9432],
   [14, 0.5283],
   [15, 0.6134],
   [16, 0.6985],
@@ -83,20 +84,36 @@ fig, ax = plt.subplots(dpi=100, figsize=(8, 4))  # 800 x 400
 ax.bar(x, y)
 ax.set_xlabel("Day #")
 ax.set_ylabel("Value")
+
+# Save plt to io buffer and encode data for <img> tag
+
 buffer = BytesIO()
 fig.savefig(buffer, format="png")
 img_data = base64.b64encode(buffer.getbuffer()).decode("ascii")
 plt.close()  # `pyplot` can cause memory leaks - explicitly close
 
 # Remove "loading" animation
-loading = document.getElementsByClassName("loading-container")[0]
-loading.style.display = "none"
 
-# Write to browser
-container = document.getElementById("container")
-plot = document.createElement("img")
-plot.src = f"data:image/png;base64,{img_data}"
-container.append(plot)
+# Set up canvas and image
+
+def draw(img):
+  canvas = document.getElementById("canvas")
+  canvas.width = 800
+  canvas.height = 400
+  ctx = canvas.getContext("2d")
+  loading = document.getElementsByClassName("loading-container")[0]
+  loading.style.display = "none"
+  ctx.drawImage(img, 0, 0)
+
+img = Image.new()
+img.style.width = "800px"
+img.style.height = "400px"
+img.src = "data:image/png;base64," + img_data
+img.onload = draw(img)
+
+<!-- canvas = document.getElementById("canvas")
+canvas.width = 1200
+canvas.height = 1200 -->
 
 </py-script>
 
@@ -104,7 +121,10 @@ container.append(plot)
 
 <!-- Output -->
 
-<div id="container"></div>
+<div id="container">
+  <canvas id="canvas"></canvas>
+  <div id="dropbox" style="visibility: hidden;"></div>
+</div>
 
 
 <!-- End output -->
