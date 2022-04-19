@@ -25,6 +25,11 @@ body {
   text-align: center;
 }
 
+/* #dropbox {
+  overflow: hidden;
+  height: 0;
+} */
+
 @keyframes spin {
   to {
     transform: rotate(360deg);

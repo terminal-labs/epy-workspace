@@ -34,7 +34,6 @@
 from js import (
   alert,
   document,
-  devicePixelRatio,
   Image
 )
 
@@ -57,7 +56,7 @@ data = [
   [10, 0.4671],
   [11, 0.4126],
   [12, 0.3581],
-  [13, 0.9432],
+  [13, 0.4432],
   [14, 0.5283],
   [15, 0.6134],
   [16, 0.6985],
@@ -91,29 +90,33 @@ buffer = BytesIO()
 fig.savefig(buffer, format="png")
 img_data = base64.b64encode(buffer.getbuffer()).decode("ascii")
 plt.close()  # `pyplot` can cause memory leaks - explicitly close
+buffer.close()
 
 # Remove "loading" animation
 
 # Set up canvas and image
 
-def draw(img):
+def draw(target_img):
+  <!-- target_img = document.getElementsByTagName("img")[0] -->
+  <!-- target_img.id = "canvas-plot" -->
   canvas = document.getElementById("canvas")
-  canvas.width = 800
-  canvas.height = 400
   ctx = canvas.getContext("2d")
+  canvas.width = 820
+  canvas.height = 420
+  ctx.drawImage(target_img, 0, 0)
   loading = document.getElementsByClassName("loading-container")[0]
   loading.style.display = "none"
-  ctx.drawImage(img, 0, 0)
 
 img = Image.new()
 img.style.width = "800px"
 img.style.height = "400px"
+img.style.display = "block"
+img.style.visibility = "visible"
 img.src = "data:image/png;base64," + img_data
-img.onload = draw(img)
 
-<!-- canvas = document.getElementById("canvas")
-canvas.width = 1200
-canvas.height = 1200 -->
+await asyncio.sleep(0.5)
+
+draw(img)
 
 </py-script>
 
@@ -122,8 +125,8 @@ canvas.height = 1200 -->
 <!-- Output -->
 
 <div id="container">
-  <canvas id="canvas"></canvas>
-  <div id="dropbox" style="visibility: hidden;"></div>
+  <canvas id="canvas" width="820" height="420"></canvas>
+  <div id="dropbox"></div>
 </div>
 
 
