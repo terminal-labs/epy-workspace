@@ -1,0 +1,115 @@
+<!-- Upload file to pyscript -->
+
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>py-script demos</title>
+    <!-- Styles //-->
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Text:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="static/pyscript.css" />
+    <link media="all" rel="stylesheet" href="static/style.css">
+
+    <!-- pyscript -->
+    <script defer src="static/pyscript.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <!-- Header //-->
+      <header>
+        <h1>py-script Demos</h1>
+      </header>
+
+      <main>
+        <div class="loading-container">
+          <div class="loading"></div>
+        </div>
+
+        <div id="upload_form">
+          <fieldset>
+            <legend>Upload a File (.jpg or .png)</legend>
+            <ol>
+              <li>
+                <label for="upload">File Upload:</label>
+                <input type="file" name="upload" id="upload" accept="image/png, image/jpeg">
+              </li>
+            </ol>
+          <div id="submit" style="margin: 1em 0;">
+            <input id="submit" name="submit" type="submit" value="Upload">
+          </div>
+        </div>
+
+        <div id="output"></div>
+
+<!-- py-script and py-env -->
+
+<!-- <py-env>
+</py-env> -->
+
+<py-script>
+import base64
+import pyodide
+
+from js import btoa, FileReader, Image
+
+# Handle end of loading
+
+loading = document.getElementsByClassName("loading-container")[0]
+loading.style.display = "none"
+form = document.getElementById("upload_form")
+form.style.display = "block"
+
+# <input> event handler
+
+def write_output(val):
+  """Write something to `#output` div"""
+  output = document.getElementById("output")
+  output.textContent = str(val)
+
+def get_upload():
+  """Load `input#upload` instance from DOM"""
+  upload = document.getElementById("upload")
+  return upload
+
+def reader_handler(event):
+  """Event listener for FileReader load"""
+  img_data = event.target.result
+  create_and_display_img(img_data)
+
+def upload_handler(event):
+  """Event listener/top-level controller to handle changing of #upload input"""
+  reader = FileReader.new()
+  reader.addEventListener("load", pyodide.create_proxy(reader_handler))
+  target_file = event.target.files.item(0)  # pyodide.JsProxy obj's not subscriptable
+  reader.readAsBinaryString(target_file)
+
+def create_and_display_img(img_data):
+  # Create image from binary data
+  img = Image.new()
+  img.src = "data:image/jpeg;base64," + btoa(img_data)
+
+  # Append to container
+  container = document.getElementById("container")
+  container.append(img)
+
+upload = get_upload()
+upload.addEventListener("change", pyodide.create_proxy(upload_handler))
+
+</py-script>
+
+<!-- end py-script and py-env -->
+
+<!-- Output -->
+
+<div id="container">
+
+</div>
+
+
+<!-- End output -->
+      </main>
+    </div>
+    <!-- Scripts //-->
+  </body>
+</html>

@@ -16,121 +16,22 @@
     <div id="app">
       <!-- Header //-->
       <header>
-        <h1>py-script Demos</h1>
+        <h1>py-script Demos: File Upload</h1>
       </header>
 
       <main>
-        <div class="loading-container">
-          <div class="loading"></div>
-        </div>
-
-<!-- py-script and py-env -->
-
-<py-env>
-- matplotlib
-</py-env>
-
-<py-script>
-from js import (
-  alert,
-  document,
-  Image
-)
-
-import base64
-from io import BytesIO
-
-import matplotlib.pyplot as plt
-
-data = [
-  ["Day#", "Value"],
-  [1, 0.4871],
-  [2, 0.5105],
-  [3, 0.5338],
-  [4, 0.3105],
-  [5, 0.3018],
-  [6, 0.2931],
-  [7, 0.2844],
-  [8, 0.3453],
-  [9, 0.4062],
-  [10, 0.4671],
-  [11, 0.4126],
-  [12, 0.3581],
-  [13, 0.4432],
-  [14, 0.5283],
-  [15, 0.6134],
-  [16, 0.6985],
-  [17, 0.6438],
-  [18, 0.5892],
-  [19, 0.5346],
-  [20, 0.6585],
-  [21, 0.6133],
-  [22, 0.5681],
-  [23, 0.5228],
-  [24, 0.4776],
-]
-
-# Extract plotting data and info from `data`
-
-labels = data.pop(0)
-xlabel, ylabel = labels
-x = [row[0] for row in data]
-y = [row[1] for row in data]
-
-# Create plt
-
-fig, ax = plt.subplots(dpi=100, figsize=(8, 4))  # 800 x 400
-ax.bar(x, y)
-ax.set_xlabel("Day #")
-ax.set_ylabel("Value")
-
-# Save plt to io buffer and encode data for <img> tag
-
-buffer = BytesIO()
-fig.savefig(buffer, format="png")
-img_data = base64.b64encode(buffer.getbuffer()).decode("ascii")
-plt.close()  # `pyplot` can cause memory leaks - explicitly close
-buffer.close()
-
-# Remove "loading" animation
-
-# Set up canvas and image
-
-def draw(target_img):
-  <!-- target_img = document.getElementsByTagName("img")[0] -->
-  <!-- target_img.id = "canvas-plot" -->
-  canvas = document.getElementById("canvas")
-  ctx = canvas.getContext("2d")
-  canvas.width = 820
-  canvas.height = 420
-  ctx.drawImage(target_img, 0, 0)
-  loading = document.getElementsByClassName("loading-container")[0]
-  loading.style.display = "none"
-
-img = Image.new()
-img.style.width = "800px"
-img.style.height = "400px"
-img.style.display = "block"
-img.style.visibility = "visible"
-img.src = "data:image/png;base64," + img_data
-
-await asyncio.sleep(0.5)
-
-draw(img)
-
-</py-script>
-
-<!-- end py-script and py-env -->
-
-<!-- Output -->
-
-<div id="container">
-  <canvas id="canvas" width="820" height="420"></canvas>
-  <div id="dropbox"></div>
-</div>
-
-
-<!-- End output -->
+        <ul id="project_list">
+          <li>
+            <a href="plot.html">
+              Basic matplotlib display in <pre style="display: inline;">&lt;canvas&gt;</pre> tag
+            </a>
+          </li>
+          <li>
+            <a href="form.html">
+              Handling file uploads with pyscript
+            </a>
+          </li>
+        </ul>
       </main>
     </div>
     <!-- Scripts //-->

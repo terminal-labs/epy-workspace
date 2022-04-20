@@ -25,13 +25,38 @@ body {
   text-align: center;
 }
 
-/* #dropbox {
-  overflow: hidden;
-  height: 0;
-} */
-
 @keyframes spin {
   to {
     transform: rotate(360deg);
   }
+}
+
+a {color: #43B029;}
+
+ul#project_list {
+  margin: 1em 0;
+}
+
+ul#project_list li {
+  list-style: disc;
+  margin-left: 1.25em;
+}
+
+#upload_form {
+  border-left: 3px solid #777;
+  display: none;
+  margin: 1.618em 0;
+  padding-left: 1em;
+}
+
+legend {
+  font-size: 1.25em;
+  margin: 0.5em 0;
+}
+
+input[type=submit] {
+  background: #43B029;
+  border-radius: 3px;
+  color: white;
+  padding: 0.35em 1.25em;
 }
