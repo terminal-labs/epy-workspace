@@ -42,7 +42,7 @@ ul#project_list li {
   margin-left: 1.25em;
 }
 
-#upload_form {
+#upload_form, #entry_form {
   border-left: 3px solid #777;
   display: none;
   margin: 1.618em 0;
@@ -50,13 +50,40 @@ ul#project_list li {
 }
 
 legend {
+  display: block;
   font-size: 1.25em;
   margin: 0.5em 0;
 }
 
-input[type=submit] {
+input[type=submit], button {
   background: #43B029;
   border-radius: 3px;
   color: white;
   padding: 0.35em 1.25em;
+}
+
+label {
+  display: block;
+}
+
+textarea {
+  border: 1px solid #777;
+  padding: 0.75em;
+  width: 40em;
+  height: 10em;
+}
+
+table {
+  border-collapse: collapse;
+  margin: 1em 0;
+}
+
+th, td {
+  border: 1px solid #777;
+  padding: 0.35em 0.75em;
+}
+
+th {
+  background: #eee;
+  font-weight: normal;
 }

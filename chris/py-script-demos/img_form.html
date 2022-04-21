@@ -5,11 +5,101 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>py-script demos</title>
+    <title>py-script demos: image upload form</title>
     <!-- Styles //-->
     <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Text:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="static/pyscript.css" />
-    <link media="all" rel="stylesheet" href="static/style.css">
+    <style type="text/css">
+    body {
+      font-family: "Red Hat Text", sans-serif;
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 1.618;
+    }
+
+    #app {
+      margin: 1em auto;
+      width: 1000px;
+    }
+
+    .loading {
+      display: inline-block;
+      width: 100px;
+      height: 100px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: black;
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    .loading-container {
+      margin: 5em 0 0;
+      text-align: center;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    a {color: #43B029;}
+
+    ul#project_list {
+      margin: 1em 0;
+    }
+
+    ul#project_list li {
+      list-style: disc;
+      margin-left: 1.25em;
+    }
+
+    #upload_form, #entry_form {
+      border-left: 3px solid #777;
+      display: none;
+      margin: 1.618em 0;
+      padding-left: 1em;
+    }
+
+    legend {
+      display: block;
+      font-size: 1.25em;
+      margin: 0.5em 0;
+    }
+
+    input[type=submit], button {
+      background: #43B029;
+      border-radius: 3px;
+      color: white;
+      padding: 0.35em 1.25em;
+    }
+
+    label {
+      display: block;
+    }
+
+    textarea {
+      border: 1px solid #777;
+      padding: 0.75em;
+      width: 40em;
+      height: 10em;
+    }
+
+    table {
+      border-collapse: collapse;
+      margin: 1em 0;
+    }
+
+    th, td {
+      border: 1px solid #777;
+      padding: 0.35em 0.75em;
+    }
+
+    th {
+      background: #eee;
+      font-weight: normal;
+    }
+    </style>
 
     <!-- pyscript -->
     <script defer src="static/pyscript.js"></script>
@@ -18,7 +108,7 @@
     <div id="app">
       <!-- Header //-->
       <header>
-        <h1>py-script Demos</h1>
+        <h1>py-script Demos: image upload form</h1>
       </header>
 
       <main>
