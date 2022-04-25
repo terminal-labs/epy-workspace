@@ -57,6 +57,7 @@ from js import (
 )
 
 import datetime
+import pprint
 import pyodide
 import re
 
@@ -138,28 +139,22 @@ def table_to_csv():
 
   # Get <table> data
   table = document.getElementById("data_table")
-  html = table.innerHTML
-  console.log(html)
-
-  py_html = Object.fromEntries(pyodide.to_js(html))
+  html = ""
+  html += table.innerHTML
   py_html = re_tbody.sub(html, "")
 
-
-  console.log("=====")
-  console.log("Here comes the type:")
-  console.log(type(py_html))
-  console.log(py_html)
-  console.log("=====")
-  return "asdf"
-
   rows_out = []
-  rows = html.split("<\/tr>")
+  chars = [60, 47, 116, 114, 62]  # "</tr>" in characters
+  tag = "".join([chr(c) for c in chars])
+  rows = html.split(tag)
+  console.log(rows)
   for row in rows:
       row = row.replace("<tr>", "")
       row_out = []
       for match in re_cell.finditer(row):
           row_out.append(match.group(1))
       rows_out.append(row_out)
+
   csv = "\n".join([",".join([field for field in row]) for row in rows_out])
   return csv
 
@@ -176,6 +171,7 @@ create_table()
 <!-- download = document.getElementById("download")
 download.addEventListener("click", pyodide.create_proxy(download_handler)) -->
 csv = table_to_csv()
+console.log("CSV: ")
 console.log(csv)
 
 </py-script>
