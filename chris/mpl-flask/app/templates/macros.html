@@ -1,0 +1,25 @@
+{% macro field_errors(field) %}
+  {% if field.errors %}
+    <ul class="errors">
+      {% for error in field.errors %}
+        <li>{{ error }}</li>
+      {% endfor  %}
+    </ul>
+  {% endif %}
+{% endmacro %}
+
+{% macro data_form() %}
+<form method="POST">
+  {{ form.csrf_token }}
+  <ol>
+    <li>
+      {{ form.upload.label }}
+      {{ form.upload }}
+      {{ field_errors(form.upload) }}
+    </li>
+  </ol>
+  <div id="submit" style="margin: 1em 0;">
+    {{ form.submit }}
+  </div>
+</form>
+{% endmacro %}

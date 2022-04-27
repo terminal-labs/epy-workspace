@@ -1,0 +1,193 @@
+<!-- Upload file to pyscript -->
+
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>py-script demos</title>
+    <!-- Styles //-->
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Text:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="static/pyscript.css" />
+    <link media="all" rel="stylesheet" href="static/style.css">
+
+    <!-- pyscript -->
+    <script defer src="static/pyscript.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <!-- Header //-->
+      <header>
+        <h1>py-script Demos</h1>
+      </header>
+
+      <main>
+        <div class="loading-container">
+          <div class="loading"></div>
+        </div>
+
+        <div id="entry_form">
+          <fieldset>
+            <legend>Enter text and download as .txt</legend>
+            <ol>
+              <li>
+                <label for="text_data">Enter text:</label>
+                <textarea id="text_data" name="text_data"></textarea>
+              </li>
+            </ol>
+          </fieldset>
+          <div id="submit" style="margin: 1em 0;">
+            <input id="submit" name="submit" type="submit" value="Download Text">
+          </div>
+        </div>
+
+        <div id="output"></div>
+
+<!-- py-script and py-env -->
+
+<!-- <py-env>
+</py-env> -->
+
+<py-script style="display: none;">
+from js import (
+  document,
+  Blob,
+  Object,
+  URL
+)
+
+import datetime
+import pprint
+import pyodide
+import re
+
+data = [
+    {
+        "name": "Jimmy Carter",
+        "party": "Democratic",
+        "state": "Georgia",
+        "term_began": datetime.date(1977, 1, 20),
+        "term_ended": datetime.date(1981, 1, 20),
+    },
+    {
+        "name": "Bill Clinton",
+        "party": "Democratic",
+        "state": "Arkansas",
+        "term_began": datetime.date(1993, 1, 20),
+        "term_ended": datetime.date(2001, 1, 20),
+    },
+    {
+        "name": "George W. Bush",
+        "party": "Republican",
+        "state": "Texas",
+        "term_began": datetime.date(2001, 1, 20),
+        "term_ended": datetime.date(2009, 1, 20),
+    },
+    {
+        "name": "Barack Obama",
+        "party": "Democratic",
+        "state": "Illinois",
+        "term_began": datetime.date(2009, 1, 20),
+        "term_ended": datetime.date(2017, 1, 20),
+    },
+    {
+        "name": "Donald Trump",
+        "party": "Republican",
+        "state": "New York",
+        "term_began": datetime.date(2017, 1, 20),
+        "term_ended": datetime.date(2020, 1, 20),
+    },
+]
+
+def create_table():
+  """Create table from data object"""
+  headers = list(data[0].keys())
+  table = document.createElement("table")
+  table.id = "data_table"
+
+  # Do table headers
+  header_row = table.insertRow(0)
+  for header in headers:
+    cell = document.createElement("th")
+    cell.innerHTML = header
+    header_row.appendChild(cell)
+
+  # Do data rows
+  for idx, record in enumerate(data):
+    row = table.insertRow(-1)
+    values = list(record.values())
+    for value in values:
+      if isinstance(value, datetime.date):
+        value = value.strftime("%b %e, %Y")
+      cell = row.insertCell(-1)
+      cell.innerHTML = value
+
+  # Insert table
+  container = document.getElementById("output")
+  container.appendChild(table)
+
+  # Add download button
+  button = document.createElement("button")
+  button.id = "download"
+  button.textContent = "Download Table Data"
+  container.appendChild(button)
+
+def table_to_csv():
+  # Regexes
+  re_tbody = re.compile(r"</?tbody>")
+  re_cell = re.compile(r"<t[hd]>(.+?)</t[hd]>")
+
+  # Get <table> data
+  table = document.getElementById("data_table")
+  html = ""
+  html += table.innerHTML
+  py_html = re_tbody.sub(html, "")
+
+  rows_out = []
+  chars = [60, 47, 116, 114, 62]  # "</tr>" in characters
+  tag = "".join([chr(c) for c in chars])
+  rows = html.split(tag)
+  console.log(rows)
+  for row in rows:
+      row = row.replace("<tr>", "")
+      row_out = []
+      for match in re_cell.finditer(row):
+          row_out.append(match.group(1))
+      rows_out.append(row_out)
+
+  csv = "\n".join([",".join([field for field in row]) for row in rows_out])
+  return csv
+
+def download_handler():
+  """Event listener for download click. Extracts data from HTML table for downloading
+  as a CSV file
+  """
+  csv_data = csv_from_table()
+
+
+loading = document.getElementsByClassName("loading-container")[0]
+loading.style.display = "none"
+create_table()
+<!-- download = document.getElementById("download")
+download.addEventListener("click", pyodide.create_proxy(download_handler)) -->
+csv = table_to_csv()
+console.log("CSV: ")
+console.log(csv)
+
+</py-script>
+
+<!-- end py-script and py-env -->
+
+<!-- Output -->
+
+<div id="container">
+
+</div>
+
+
+<!-- End output -->
+      </main>
+    </div>
+    <!-- Scripts //-->
+  </body>
+</html>

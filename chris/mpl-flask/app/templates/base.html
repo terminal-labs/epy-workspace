@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Flask/canvas/matplotlib demo</title>
+    <!-- Styles //-->
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Text:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    {% assets "css_all" %}<link rel="stylesheet" media="all" href="{{ ASSET_URL }}">{% endassets %}
+
+  </head>
+  <body class="{{ request.endpoint|replace('.', '_') }}">
+    <div id="app">
+      <!-- Header //-->
+      <header>
+        <h1>Demo</h1>
+      </header>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <ul class="flashes">
+          {% for category, message in messages %}
+            <li class="{{ category }}">{{ message }}</li>
+          {% endfor %}
+          </ul>
+        {% endif %}
+      {% endwith %}
+
+      {% block content %}{% endblock %}
+
+    <!-- Scripts //-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    {% assets "js_all" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
+  </body>
+</html>
